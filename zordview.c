@@ -7,6 +7,7 @@
 #include <math.h>
 #include <malloc.h>
 #include <png.h>
+#include "zordinate.h"
 
 long readInfile(char *filename, char **buffer);
 float *zordCreateImage(char *linarray, long len);
