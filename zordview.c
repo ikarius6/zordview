@@ -163,7 +163,6 @@ long readInfile(char *filename, char **buffer)
         if (!f) return 0;
         fseek(f, 0, SEEK_END);
         long fsize = ftell(f);
-        printf("size %lx\n", fsize);
         fseek(f, 0, SEEK_SET);
 
         *buffer = malloc(fsize);
