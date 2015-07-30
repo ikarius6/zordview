@@ -166,7 +166,7 @@ long readInfile(char *filename, char **buffer)
         fseek(f, 0, SEEK_SET);
 
         *buffer = malloc(fsize);
-        fread(buffer, fsize, 1, f);
+        fread(*buffer, fsize, 1, f);
         fclose(f);
 
         return fsize;
@@ -177,7 +177,7 @@ float *zordCreateImage(char *linarray, long len)
         int i;
         long newlen = powl(4, ceill(log2l(len)/2));
         char *newbuf = calloc(newlen, sizeof(char));
-        newbuf = memcpy(newbuf, linarray, len);
+        memcpy(newbuf, linarray, len);
         // Now newbuf is square and zeroed after actual content
         char *zordarray = calloc(newlen, sizeof(char));
         lin2zord(newbuf, zordarray, newlen, sqrt(newlen));
