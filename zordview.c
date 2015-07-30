@@ -9,7 +9,7 @@
 #include <png.h>
 
 long readInfile(char *filename, char **buffer);
-float *buffer = zordCreateImage(char *linarray, long len);
+float *zordCreateImage(char *linarray, long len);
 
 // This takes the float value 'val', converts it to red, green & blue values, then 
 // sets those values into the image memory buffer location pointed to by 'ptr'
@@ -173,6 +173,7 @@ long readInfile(char *filename, char **buffer)
 
 float *zordCreateImage(char *linarray, long len)
 {
+        int i;
         long newlen = powl(4, ceill(log2l(len)/2));
         char *newbuf = calloc(newlen, sizeof(char));
         newbuf = memcpy(newbuf, linarray, len);
@@ -180,7 +181,7 @@ float *zordCreateImage(char *linarray, long len)
         char *zordarray = calloc(newlen, sizeof(char));
         lin2zord(newbuf, zordarray, newlen, sqrt(newlen));
         float *buffer = calloc(newlen, sizeof(float));
-        for (int i=0; i<newlen; i++)
+        for (i=0; i<newlen; i++)
         {
                 buffer[i] = zordarray[i]/256;
         }
