@@ -60,20 +60,9 @@ int main(int argc, char *argv[])
 
 inline void setRGB(png_byte *ptr, float val)
 {
-	int v = (int)(val*3 * 767);
-	if (v < 0) v = 0;
-	if (v > 767) v = 767;
-	int offset = v % 256;
-
-	if (v<256) {
-		ptr[0] = 0; ptr[1] = 0; ptr[2] = offset;
-	}
-	else if (v<512) {
-		ptr[0] = 0; ptr[1] = offset; ptr[2] = 255-offset;
-	}
-	else {
-		ptr[0] = offset; ptr[1] = 255-offset; ptr[2] = 0;
-	}
+  /* Greyscale */
+        //  R        G        B
+        ptr[0] = ptr[1] = ptr[2] = val*256;
 }
 
 int writeImage(char* filename, int width, int height, float *buffer, char* title)
