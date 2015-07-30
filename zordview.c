@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 	}
 
         char *linarray;
-        long len = readInfile(argv[0], &linarray);
+        long len = readInfile(argv[1], &linarray);
         if (len == 0) {
                 return 1;
         }
