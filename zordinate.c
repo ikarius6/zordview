@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <malloc.h>
-#include <string.h>
-#include <math.h>
+#include "zordinate.h"
 
 int isPowerOfFour(unsigned int n)
 {
@@ -14,40 +11,6 @@ int isPowerOfFour(unsigned int n)
     n = n/4;      
   }
   return 1;
-}
-
-// Assumes memory is already allocated
-int lin2zord(unsigned char *lin, unsigned char *zord, int n, int zw);
-void lin2zord_internal(unsigned char *lin, int start, int end, unsigned char *zord, int zx, int zy, int zw);
-
-int main () {
-  unsigned char *input = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01"\
-                "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01"\
-                "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01"\
-                "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01";
-  unsigned char *output;
-  int i,j,len,wid;
-  len = strlen(input);
-  output = malloc(len * sizeof(unsigned char));
-  wid = sqrt(len);
-  if (lin2zord(input, output, len, wid)) return -1;
-  for(i=0;i<wid;i++)
-  {
-    printf("| ");
-    for(j=0;j<wid;j++)
-    {
-      printf("%2x ",(int)*(output+i*wid+j));
-    }
-    printf("|\n");
-  }
-  return 0;
-}
-
-int lin2zord(unsigned char *lin, unsigned char *zord, int n, int zw)
-{
-  if (!isPowerOfFour(n)) return -1;
-  lin2zord_internal(lin, 0, n-1, zord, 0, 0, zw);
-  return 0;
 }
 
 void lin2zord_internal(unsigned char *lin, int start, int end, unsigned char *zord, int zx, int zy, int zw)
@@ -66,6 +29,14 @@ void lin2zord_internal(unsigned char *lin, int start, int end, unsigned char *zo
     lin2zord_internal(lin, start+2*l4, start+3*l4-1, zord, zx,      zy+ls/2, zw);
     lin2zord_internal(lin, start+3*l4, end,          zord, zx+ls/2, zy+ls/2, zw);
   }
+}
+
+
+int lin2zord(unsigned char *lin, unsigned char *zord, int n, int zw)
+{
+  if (!isPowerOfFour(n)) return -1;
+  lin2zord_internal(lin, 0, n-1, zord, 0, 0, zw);
+  return 0;
 }
 
 /*
