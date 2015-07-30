@@ -61,6 +61,7 @@ int main(int argc, char *argv[])
 inline void setRGB(png_byte *ptr, float val)
 {
 	int v = (int)(val * 767);
+        printf("val: %f\tv: %d\n", val, v);
 	if (v < 0) v = 0;
 	if (v > 767) v = 767;
 	int offset = v % 256;
@@ -184,7 +185,7 @@ float *zordCreateImage(char *linarray, long len)
         float *buffer = calloc(newlen, sizeof(float));
         for (i=0; i<newlen; i++)
         {
-                buffer[i] = zordarray[i]/256;
+                buffer[i] = zordarray[i]/256.0;
         }
         free(zordarray);
         free(newbuf);
