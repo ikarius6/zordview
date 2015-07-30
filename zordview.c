@@ -175,7 +175,7 @@ long readInfile(char *filename, char **buffer)
 float *zordCreateImage(char *linarray, long len)
 {
         int i;
-        long newlen = powl(4, ceill(log2l(len)/2));
+        long int newlen = (long int)powl(4, ceill(log2l(len)/2));
         char *newbuf = calloc(newlen, sizeof(char));
         memcpy(newbuf, linarray, len);
         // Now newbuf is square and zeroed after actual content
