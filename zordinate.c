@@ -17,18 +17,18 @@ int isPowerOfFour(unsigned int n)
 }
 
 // Assumes memory is already allocated
-int lin2zord(char *lin, char *zord, int n, int zw);
-void lin2zord_internal(char *lin, int start, int end, char *zord, int zx, int zy, int zw);
+int lin2zord(unsigned char *lin, unsigned char *zord, int n, int zw);
+void lin2zord_internal(unsigned char *lin, int start, int end, unsigned char *zord, int zx, int zy, int zw);
 
 int main () {
-  char *input = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01"\
+  unsigned char *input = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01"\
                 "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01"\
                 "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01"\
                 "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01";
-  char *output;
+  unsigned char *output;
   int i,j,len,wid;
   len = strlen(input);
-  output = malloc(len * sizeof(char));
+  output = malloc(len * sizeof(unsigned char));
   wid = sqrt(len);
   if (lin2zord(input, output, len, wid)) return -1;
   for(i=0;i<wid;i++)
@@ -43,14 +43,14 @@ int main () {
   return 0;
 }
 
-int lin2zord(char *lin, char *zord, int n, int zw)
+int lin2zord(unsigned char *lin, unsigned char *zord, int n, int zw)
 {
   if (!isPowerOfFour(n)) return -1;
   lin2zord_internal(lin, 0, n-1, zord, 0, 0, zw);
   return 0;
 }
 
-void lin2zord_internal(char *lin, int start, int end, char *zord, int zx, int zy, int zw)
+void lin2zord_internal(unsigned char *lin, int start, int end, unsigned char *zord, int zx, int zy, int zw)
 {
   int ls = sqrt(end-start+1);
   int l4 = (end-start+1)/4;
