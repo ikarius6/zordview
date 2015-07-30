@@ -1,0 +1,80 @@
+libpng
+ info
+  bit_depth 16
+  color_type PNG_COLOR_TYPE_GRAY
+
+ // Standard File I/O Initialization
+ FILE *fp = fopen(file_name, "wb");
+ if (!fp)
+ {
+         return (ERROR);
+ }
+ // Finally: fclose(fp);
+
+png_structp png_ptr;
+png_infop info_ptr;
+png_voidp user_error_ptr;
+
+ png_ptr = png_create_write_struct
+        (PNG_LIBPNG_VER_STRING, (png_voidp)user_error_ptr,
+         user_error_fn, NULL);
+ if(!png_ptr)
+         return (ERROR); // Out of memory?
+ // Finally: png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
+
+ info_ptr = png_create_info_struct(png_ptr);
+ if (!info_ptr)
+ {
+         png_destroy_write_struct(&png_ptr,
+           (png_infopp)NULL);
+         return (ERROR);
+ }
+
+ if (setjmp(png_jpmbuf(png_ptr)))
+ {
+         png_destroy_write_struct(&png_ptr, &info_ptr);
+         fclose(fp);
+         return (ERROR);
+ }
+
+static void user_error_fn(png_structp png_ptr, png_constat_charp msg)
+{
+        // Handle error here
+}
+
+png_init_io(png_ptr, fp);
+
+void write_row_callback(png_ptr, png_uint_32 row, int pass)
+{
+        // stuff
+}
+
+png_set_write_status_fn(png_ptr, write_row_callback);
+
+width = //value;
+height = //value;
+bit_depth = 16;
+color_type = PNG_COLOR_TYPE_GRAY;
+interlace_type = PNG_INTERLACE_NONE;
+compression_type = PNG_COMPRESSION_TYPE_DEFAULT;
+filter_method = PNG_FILTER_TYPE_DEFAULT
+png_set_IHDR(png_ptr, info_ptr, width, height, bit_depth, color_type, interlace_type, compression_type, filter_method);
+
+// I don't recall which data orientation guarantees are or aren't provided
+// So I'm not using bracket notation for arrays 'til I can check it
+unsigned char* image_data = (unsigned char *) malloc(height*width);
+unsigned char** row_pointers = (unsigned char **) malloc(height*sizeof(unsigned char *));
+if (image_data == NULL || row_pointers == NULL)
+{
+        // Cleanup
+}
+
+png_set_rows(
+
+png_byte *row_pointers[height];
+png_write_image(png_ptr, row_pointers);
+
+png_write_end(png_ptr, info_ptr);
+png_destroy_write_struct(&png_ptr, &info_ptr);
+fclose(fp);
+
