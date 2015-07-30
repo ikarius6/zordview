@@ -180,7 +180,7 @@ float *zordCreateImage(char *linarray, long len)
         memcpy(newbuf, linarray, len);
         // Now newbuf is square and zeroed after actual content
         char *zordarray = calloc(newlen, sizeof(char));
-        lin2zord(newbuf, zordarray, newlen, sqrt(newlen));
+        lin2zord(newbuf, zordarray, newlen, (int)sqrt(newlen));
         float *buffer = calloc(newlen, sizeof(float));
         for (i=0; i<newlen; i++)
         {
