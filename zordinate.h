@@ -1,5 +1,5 @@
-#IFDEF ZORDINATE_H
-#DEFINE ZORDINATE_H
+#ifdef ZORDINATE_H
+#define ZORDINATE_H
 
 /*
  * Transform a linear array into a z-order array.
@@ -13,4 +13,4 @@
  */
 int lin2zord(unsigned char *lin, unsigned char *zord, int n, int zw);
 
-#ENDIF // ZORDINATE_H
+#endif // ZORDINATE_H

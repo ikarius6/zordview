@@ -1,4 +1,5 @@
 #include "zordinate.h"
+#include <math.h>
 
 int isPowerOfFour(unsigned int n)
 {
