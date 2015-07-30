@@ -1,19 +1,15 @@
-// LibPNG example
-// A.Greensted
-// http://www.labbookpages.co.uk
-
-// Version 2.0
-// With some minor corrections to Mandlebrot code (thanks to Jan-Oliver)
-
-// Version 1.0 - Initial release
+/* Based on LibPNG example A.Greensted
+ * http://www.labbookpages.co.uk
+ */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include <malloc.h>
 #include <png.h>
 
-// Creates a test image for saving. Creates a Mandelbrot Set fractal of size width x height
-float *createMandelbrotImage(int width, int height, float xS, float yS, float rad, int maxIteration);
+long readInfile(char *filename, char **buffer);
+float *buffer = zordCreateImage(char *linarray, long len);
 
 // This takes the float value 'val', converts it to red, green & blue values, then 
 // sets those values into the image memory buffer location pointed to by 'ptr'
@@ -27,19 +23,24 @@ int writeImage(char* filename, int width, int height, float *buffer, char* title
 int main(int argc, char *argv[])
 {
 	// Make sure that the output filename argument has been provided
-	if (argc != 2) {
-		fprintf(stderr, "Please specify output file\n");
+	if (argc != 3) {
+		fprintf(stderr, "Usage: ./zordview infile outfile.png\n");
 		return 1;
 	}
 
-	// Specify an output image size
-	int width = 500;
-	int height = 300;
+        char *linarray;
+        long len = readInfile(argv[0], &linarray);
+        if (len == 0) {
+                return 1;
+        }
 
-	// Create a test image - in this case a Mandelbrot Set fractal
+	// Specify an output image size
+	int width = (int)sqrt(powl(4, ceill(log2l(len)/2)));
+	int height = (int)width;
+
 	// The output is a 1D array of floats, length: width * height
 	printf("Creating Image\n");
-	float *buffer = createMandelbrotImage(width, height, -0.802, -0.177, 0.011, 110);
+	float *buffer = zordCreateImage(linarray, len);
 	if (buffer == NULL) {
 		return 1;
 	}
@@ -47,9 +48,10 @@ int main(int argc, char *argv[])
 	// Save the image to a PNG file
 	// The 'title' string is stored as part of the PNG file
 	printf("Saving PNG\n");
-	int result = writeImage(argv[1], width, height, buffer, "This is my test image");
+	int result = writeImage(argv[2], width, height, buffer, "This is my test image");
 
-	// Free up the memorty used to store the image
+	// Free up the memory used to store the image
+        free(linarray);
 	free(buffer);
 
 	return result;
@@ -154,59 +156,35 @@ int writeImage(char* filename, int width, int height, float *buffer, char* title
 	return code;
 }
 
-float *createMandelbrotImage(int width, int height, float xS, float yS, float rad, int maxIteration)
+long readInfile(char *filename, char **buffer)
 {
-	float *buffer = (float *) malloc(width * height * sizeof(float));
-	if (buffer == NULL) {
-		fprintf(stderr, "Could not create image buffer\n");
-		return NULL;
-	}
+        FILE *f = fopen(filename, "rb");
+        if (!f) return 0;
+        fseek(f, 0, SEEK_END);
+        long fsize = ftell(f);
+        fseek(f, 0, SEEK_SET);
 
-	// Create Mandelbrot set image
+        *buffer = malloc(fsize);
+        fread(buffer, fsize, 1, f);
+        fclose(f);
 
-	int xPos, yPos;
-	float minMu = maxIteration;
-	float maxMu = 0;
+        return fsize;
+}
 
-	for (yPos=0 ; yPos<height ; yPos++)
-	{
-		float yP = (yS-rad) + (2.0f*rad/height)*yPos;
-
-		for (xPos=0 ; xPos<width ; xPos++)
-		{
-			float xP = (xS-rad) + (2.0f*rad/width)*xPos;
-
-			int iteration = 0;
-			float x = 0;
-			float y = 0;
-
-			while (x*x + y*y <= 4 && iteration < maxIteration)
-			{
-				float tmp = x*x - y*y + xP;
-				y = 2*x*y + yP;
-				x = tmp;
-				iteration++;
-			}
-
-			if (iteration < maxIteration) {
-				float modZ = sqrt(x*x + y*y);
-				float mu = iteration - (log(log(modZ))) / log(2);
-				if (mu > maxMu) maxMu = mu;
-				if (mu < minMu) minMu = mu;
-				buffer[yPos * width + xPos] = mu;
-			}
-			else {
-				buffer[yPos * width + xPos] = 0;
-			}
-		}
-	}
-
-	// Scale buffer values between 0 and 1
-	int count = width * height;
-	while (count) {
-		count --;
-		buffer[count] = (buffer[count] - minMu) / (maxMu - minMu);
-	}
-
-	return buffer;
+float *zordCreateImage(char *linarray, long len)
+{
+        long newlen = powl(4, ceill(log2l(len)/2));
+        char *newbuf = calloc(newlen, sizeof(char));
+        newbuf = memcpy(newbuf, linarray, len);
+        // Now newbuf is square and zeroed after actual content
+        char *zordarray = calloc(newlen, sizeof(char));
+        lin2zord(newbuf, zordarray, newlen, sqrt(newlen));
+        float *buffer = calloc(newlen, sizeof(float));
+        for (int i=0; i<newlen; i++)
+        {
+                buffer[i] = zordarray[i]/256;
+        }
+        free(zordarray);
+        free(newbuf);
+        return buffer;
 }
