@@ -60,8 +60,7 @@ int main(int argc, char *argv[])
 
 inline void setRGB(png_byte *ptr, float val)
 {
-	int v = (int)(val * 767);
-        printf("val: %f\tv: %d\n", val, v);
+	int v = (int)(val*3 * 767);
 	if (v < 0) v = 0;
 	if (v > 767) v = 767;
 	int offset = v % 256;
