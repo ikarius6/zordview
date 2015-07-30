@@ -5,4 +5,4 @@ Power of 2 boundaries are common in binary file formats. Human visual perception
 
 ![Demo image](https://raw.githubusercontent.com/feonixrift/zordview/master/demo.png "Demo image")
 
-This demo is made by running ./zordview zordview demo.png
+This demo is made by running ./zordview zordview demo.png. It is the content of the executable file itself, visualized.
