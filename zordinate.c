@@ -25,10 +25,17 @@ void lin2zord_internal(unsigned char *lin, int start, int end, unsigned char *zo
     *(zord+(zx+0)+(zy+1)*zw) = lin[start+2];
     *(zord+(zx+1)+(zy+1)*zw) = lin[start+3];
   } else {
-    lin2zord_internal(lin, start,      start+l4-1,   zord, zx,      zy,      zw);
-    lin2zord_internal(lin, start+l4,   start+2*l4-1, zord, zx+ls/2, zy,      zw);
-    lin2zord_internal(lin, start+2*l4, start+3*l4-1, zord, zx,      zy+ls/2, zw);
-    lin2zord_internal(lin, start+3*l4, end,          zord, zx+ls/2, zy+ls/2, zw);
+    if (ls > zw) { // The result is not square & we're in a top layer
+      lin2zord_internal(lin, start,      start+l4-1,   zord, zx,      zy,        zw);
+      lin2zord_internal(lin, start+l4,   start+2*l4-1, zord, zx,      zy+ls/2,   zw);
+      lin2zord_internal(lin, start+2*l4, start+3*l4-1, zord, zx,      zy+ls,     zw);
+      lin2zord_internal(lin, start+3*l4, end,          zord, zx,      zy+3*ls/2, zw);
+    } else {
+      lin2zord_internal(lin, start,      start+l4-1,   zord, zx,      zy,        zw);
+      lin2zord_internal(lin, start+l4,   start+2*l4-1, zord, zx+ls/2, zy,        zw);
+      lin2zord_internal(lin, start+2*l4, start+3*l4-1, zord, zx,      zy+ls/2,   zw);
+      lin2zord_internal(lin, start+3*l4, end,          zord, zx+ls/2, zy+ls/2,   zw);
+    }
   }
 }
 
