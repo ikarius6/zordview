@@ -28,7 +28,9 @@ void runit(char *input) {
     }
     printf("|\n");
   }
+  free(output);
   wid = wid/2;
+  output = calloc(ceil(len/(float)wid)*wid, sizeof(unsigned char));
   printf("wid %d\n",wid);
   lin2zord(input, output, len, wid);
   for(i=0;i<ceil(len/(float)wid);i++)
