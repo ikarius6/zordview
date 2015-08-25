@@ -7,7 +7,7 @@
 void runit(char *input);
 
 int main () {
-  runit("A");
+  runit("ABC");
   return 0;
 }
 
@@ -18,23 +18,23 @@ void runit(char *input) {
   wid = ceil(sqrt(len));
   printf("wid %d\n",wid);
   lin2zord(input, output, len, wid);
-  for(i=0;i<len/wid;i++)
+  for(i=0;i<ceil(len/(float)wid);i++)
   {
     printf("| ");
     for(j=0;j<wid;j++)
     {
-      printf("%c ",(char)*(output+i*wid+j));
+      printf("%c ", (i*wid+j)<len ? (char)*(output+i*wid+j) : ' ');
     }
     printf("|\n");
   }
   wid = wid/2;
   lin2zord(input, output, len, wid);
-  for(i=0;i<len/wid;i++)
+  for(i=0;i<ceil(len/(float)wid);i++)
   {
     printf("| ");
     for(j=0;j<wid;j++)
     {
-      printf("%c ",(char)*(output+i*wid+j));
+      printf("%c ", (i*wid+j)<len ? (char)*(output+i*wid+j) : ' ');
     }
     printf("|\n");
   }

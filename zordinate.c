@@ -76,7 +76,7 @@ int lin2zord(unsigned char *lin, unsigned char *zord, int n, int zw)
 {
   int i;
   if (!isPowerOfTwo(zw)) return -1; // Don't even try to correct bad widths
-  if (zw*zw == n) { // Square
+  if (zw*zw/2 <= n <= zw*zw) { // Square
     printf("Square\n");
     lin2zord_internal(lin, 0, n-1, zord, 0, 0, zw);
   } else if (zw*zw < n) { // Tall
@@ -86,7 +86,7 @@ int lin2zord(unsigned char *lin, unsigned char *zord, int n, int zw)
       lin2zord_internal(lin, i*zw*zw, (i+1)*zw*zw-1, zord, 0, i*zw, zw);
     }
     lin2zord_internal(lin, i*zw*zw, n-1, zord, 0, i*zw, zw);
-  } else { // zw*zw > n  // Wide
+  } else { // n < zw*zw/2  // Wide
     printf("Wide\n");
     // Height is the largest power of two less than n
     // Repeat across to reach zw
