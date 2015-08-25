@@ -2,6 +2,10 @@
 #include <stdio.h>
 #include <math.h>
 
+#ifndef min
+    #define min(a,b) ((a) < (b) ? (a) : (b))
+#endif
+
 int isPowerOfTwo (unsigned int x)
 {
     return ((x != 0) && !(x & (x - 1)));
@@ -34,7 +38,7 @@ void lin2zord_internal(unsigned char *lin, int start, int end, unsigned char *zo
 {
   int length = (end-start+1);
   int len_sqrt = ceil(sqrt(length));
-  int len_block = len_sqrt * len_sqrt;
+  int len_block = pow(2, ceil(log2(length)));
   int l4 = len_block/4; // Size of a quarter
   printf("internal %d..%d, %d,%d:%d, %d %d %d %d\n", start, end, zx, zy, zw, length, len_sqrt, len_block, l4);
   if (length <=4) {
@@ -43,30 +47,30 @@ void lin2zord_internal(unsigned char *lin, int start, int end, unsigned char *zo
       printf("Base case 4 %c %d,%d\n", lin[start+3], zx+1, zy+1);
       *(zord+(zx+1)+(zy+1)*zw) = lin[start+3];
       case 3:
-      printf("Base case 3 %c %d %d\n", lin[start+2], zx+0, zy+1);
+      printf("Base case 3 %c %d,%d\n", lin[start+2], zx+0, zy+1);
       *(zord+(zx+0)+(zy+1)*zw) = lin[start+2];
       case 2:
-      printf("Base case 2 %c %d %d\n", lin[start+1], zx+1, zy+0);
+      printf("Base case 2 %c %d,%d\n", lin[start+1], zx+1, zy+0);
       *(zord+(zx+1)+(zy+0)*zw) = lin[start+1];
       case 1:
-      printf("Base case 1 %c %d %d\n", lin[start+0], zx+0, zy+0);
+      printf("Base case 1 %c %d,%d\n", lin[start+0], zx+0, zy+0);
       *(zord+(zx+0)+(zy+0)*zw) = lin[start+0];
     }
   } else {
-    printf("(int)ceil(%d/%d) = %d\n", length, len_block, (int)ceil(length/l4));
-    switch ((int)ceil(length/l4)) {
+    printf("(int)ceil(%d/%d) = %d\n", length, l4, (int)ceil(length/(float)l4));
+    switch ((int)ceil(length/(float)l4)) {
       case 4:
       printf("Maze case 4\n");
-      lin2zord_internal(lin, start, start+l4-1, zord, zx, zy, zw);
+      lin2zord_internal(lin, start+3*l4, end, zord, zx+len_sqrt/2, zy+len_sqrt/2, zw);
       case 3:
       printf("Maze case 3\n");
-      lin2zord_internal(lin, start+l4, start+2*l4-1, zord, zx+len_sqrt/2, zy, zw);
+      lin2zord_internal(lin, start+2*l4, min(start+3*l4-1, end), zord, zx, zy+len_sqrt/2, zw);
       case 2:
       printf("Maze case 2\n");
-      lin2zord_internal(lin, start+2*l4, start+3*l4-1, zord, zx, zy+len_sqrt/2, zw);
+      lin2zord_internal(lin, start+l4, min(start+2*l4-1, end), zord, zx+len_sqrt/2, zy, zw);
       case 1:
       printf("Maze case 1\n");
-      lin2zord_internal(lin, start+3*l4, end, zord, zx+len_sqrt/2, zy+len_sqrt/2, zw);
+      lin2zord_internal(lin, start, min(start+l4-1, end), zord, zx, zy, zw);
     }
   }
 }
@@ -76,7 +80,7 @@ int lin2zord(unsigned char *lin, unsigned char *zord, int n, int zw)
 {
   int i;
   if (!isPowerOfTwo(zw)) return -1; // Don't even try to correct bad widths
-  if (zw*zw/2 <= n && n <= zw*zw) { // Square
+  if (zw*zw/2 < n && n <= zw*zw) { // Square
     printf("Square %d %d %d\n", zw*zw/2, n, zw*zw);
     lin2zord_internal(lin, 0, n-1, zord, 0, 0, zw);
   } else if (zw*zw < n) { // Tall
