@@ -28,6 +28,7 @@ void runit(char *input) {
     printf("|\n");
   }
   wid = wid/2;
+  printf("wid %d\n",wid);
   lin2zord(input, output, len, wid);
   for(i=0;i<ceil(len/(float)wid);i++)
   {
