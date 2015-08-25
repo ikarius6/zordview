@@ -7,10 +7,6 @@
 void runit(char *input);
 
 int main () {
-  runit("A");
-  runit("AB");
-  runit("ABC");
-  runit("ABCD");
   runit("ABCDEFGHIJKLMNOP");
   return 0;
 }
@@ -19,7 +15,8 @@ void runit(char *input) {
   int i,j,len,wid;
   len = strlen(input);
   char *output = calloc(len, sizeof(unsigned char));
-  wid = ceil(sqrt(len))*ceil(sqrt(len));
+  wid = ceil(sqrt(len));
+  printf("wid %d\n",wid);
   lin2zord(input, output, len, wid);
   for(i=0;i<len/wid;i++)
   {

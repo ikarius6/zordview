@@ -53,7 +53,8 @@ void lin2zord_internal(unsigned char *lin, int start, int end, unsigned char *zo
       *(zord+(zx+0)+(zy+0)*zw) = lin[start+0];
     }
   } else {
-    switch ((int)ceil(length/len_block)) {
+    printf("(int)ceil(%d/%d) = %d\n", length, len_block, (int)ceil(length/l4));
+    switch ((int)ceil(length/l4)) {
       case 4:
       printf("Maze case 4\n");
       lin2zord_internal(lin, start, start+l4-1, zord, zx, zy, zw);
