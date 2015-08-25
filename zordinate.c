@@ -40,16 +40,16 @@ void lin2zord_internal(unsigned char *lin, int start, int end, unsigned char *zo
   if (length <=4) {
     switch (length) {
       case 4:
-      printf("Base case 4 %c\n", lin[start+3]);
+      printf("Base case 4 %c %d,%d\n", lin[start+3], zx+1, zy+1);
       *(zord+(zx+1)+(zy+1)*zw) = lin[start+3];
       case 3:
-      printf("Base case 3 %c\n", lin[start+2]);
+      printf("Base case 3 %c %d %d\n", lin[start+2], zx+0, zy+1);
       *(zord+(zx+0)+(zy+1)*zw) = lin[start+2];
       case 2:
-      printf("Base case 2 %c\n", lin[start+1]);
+      printf("Base case 2 %c %d %d\n", lin[start+1], zx+1, zy+0);
       *(zord+(zx+1)+(zy+0)*zw) = lin[start+1];
       case 1:
-      printf("Base case 1 %c\n", lin[start+0]);
+      printf("Base case 1 %c %d %d\n", lin[start+0], zx+0, zy+0);
       *(zord+(zx+0)+(zy+0)*zw) = lin[start+0];
     }
   } else {

@@ -14,17 +14,17 @@ int main () {
 void runit(char *input) {
   int i,j,len,wid;
   len = strlen(input);
-  char *output = calloc(len, sizeof(unsigned char));
   // The first power of two greater than sqrt(len)
   wid = pow(2, ceil(log2(sqrt(len))));
   printf("wid %d\n",wid);
+  char *output = calloc(ceil(len/(float)wid)*wid, sizeof(unsigned char));
   lin2zord(input, output, len, wid);
   for(i=0;i<ceil(len/(float)wid);i++)
   {
     printf("| ");
     for(j=0;j<wid;j++)
     {
-      printf("%c ", (i*wid+j)<len ? (char)*(output+i*wid+j) : ' ');
+      printf("%c ", (char)*(output+i*wid+j));
     }
     printf("|\n");
   }
@@ -36,7 +36,7 @@ void runit(char *input) {
     printf("| ");
     for(j=0;j<wid;j++)
     {
-      printf("%c ", (i*wid+j)<len ? (char)*(output+i*wid+j) : ' ');
+      printf("%c ", (char)*(output+i*wid+j));
     }
     printf("|\n");
   }
