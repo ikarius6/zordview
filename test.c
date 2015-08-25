@@ -7,7 +7,7 @@
 void runit(char *input);
 
 int main () {
-  runit("ABC");
+  runit("ABCD");
   return 0;
 }
 

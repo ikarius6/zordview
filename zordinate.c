@@ -76,8 +76,8 @@ int lin2zord(unsigned char *lin, unsigned char *zord, int n, int zw)
 {
   int i;
   if (!isPowerOfTwo(zw)) return -1; // Don't even try to correct bad widths
-  if (zw*zw/2 <= n <= zw*zw) { // Square
-    printf("Square\n");
+  if (zw*zw/2 <= n && n <= zw*zw) { // Square
+    printf("Square %d %d %d\n", zw*zw/2, n, zw*zw);
     lin2zord_internal(lin, 0, n-1, zord, 0, 0, zw);
   } else if (zw*zw < n) { // Tall
     printf("Tall\n");
