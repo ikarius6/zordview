@@ -40,7 +40,8 @@ void lin2zord_internal(unsigned char *lin, int start, int end, unsigned char *zo
   int len_sqrt = ceil(sqrt(length));
   int len_block = pow(2, ceil(log2(length)));
   int l4 = len_block/4; // Size of a quarter
-  printf("internal %d..%d, %d,%d:%d, %d %d %d %d\n", start, end, zx, zy, zw, length, len_sqrt, len_block, l4);
+  printf("internal %d..%d, %d,%d:%d, %d %d %d %d\n", 
+    start, end, zx, zy, zw, length, len_sqrt, len_block, l4);
   if (length <=4) {
     switch (length) {
       case 4:
@@ -61,13 +62,13 @@ void lin2zord_internal(unsigned char *lin, int start, int end, unsigned char *zo
     switch ((int)ceil(length/(float)l4)) {
       case 4:
       printf("Maze case 4\n");
-      lin2zord_internal(lin, start+3*l4, end, zord, zx+len_sqrt/2, zy+len_sqrt/2, zw);
+      lin2zord_internal(lin, start+3*l4, end, zord, zx+(sqrt(len_block))/2, zy+(sqrt(len_block))/2, zw);
       case 3:
       printf("Maze case 3\n");
-      lin2zord_internal(lin, start+2*l4, min(start+3*l4-1, end), zord, zx, zy+len_sqrt/2, zw);
+      lin2zord_internal(lin, start+2*l4, min(start+3*l4-1, end), zord, zx, zy+(sqrt(len_block))/2, zw);
       case 2:
       printf("Maze case 2\n");
-      lin2zord_internal(lin, start+l4, min(start+2*l4-1, end), zord, zx+len_sqrt/2, zy, zw);
+      lin2zord_internal(lin, start+l4, min(start+2*l4-1, end), zord, zx+(sqrt(len_block))/2, zy, zw);
       case 1:
       printf("Maze case 1\n");
       lin2zord_internal(lin, start, min(start+l4-1, end), zord, zx, zy, zw);
