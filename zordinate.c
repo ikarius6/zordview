@@ -92,7 +92,7 @@ int lin2zord(unsigned char *lin, unsigned char *zord, int n, int zw)
     int h = pow(2, floor(log2(sqrt(n))));
     // Repeat across to reach zw
     for (i=0; (i+1)*h*h < n; i++) {
-      lin2zord_internal(lin, i*h*h, (i+i)*h*h-1, zord, i*h, 0, zw);
+      lin2zord_internal(lin, i*h*h, (i+1)*h*h-1, zord, i*h, 0, zw);
     }
     lin2zord_internal(lin, i*h*h, n-1, zord, i*h, 0, zw);
   }
