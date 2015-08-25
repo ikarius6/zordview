@@ -7,7 +7,7 @@
 void runit(char *input);
 
 int main () {
-  runit("ABCD");
+  runit("ABCDE");
   return 0;
 }
 
@@ -15,7 +15,8 @@ void runit(char *input) {
   int i,j,len,wid;
   len = strlen(input);
   char *output = calloc(len, sizeof(unsigned char));
-  wid = ceil(sqrt(len));
+  // The first power of two greater than sqrt(len)
+  wid = pow(2, ceil(log2(sqrt(len))));
   printf("wid %d\n",wid);
   lin2zord(input, output, len, wid);
   for(i=0;i<ceil(len/(float)wid);i++)
